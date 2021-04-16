@@ -9,5 +9,15 @@ t : play with the Terminal""")
     quit()
 
 if __name__ == "__main__":
-    print("Running the program")
+    if len(argv) != 2:
+        usage()
+    elif argv[1] =='t':
+        ui = Terminal()
+    elif argv[1] == 'g':
+        ui = Gui()
+    else:
+        usage()
+    
+    # Polumorphism
+    ui.run()
 
