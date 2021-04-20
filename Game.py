@@ -1,8 +1,14 @@
+from itertools import product
+
+class GameError(Exception):
+    pass
+
 class Game:
 
     P1 = 'o'
     P2 = 'x'
     _EMPTY = ' '
+    _DRAW = 'd'
     _DIM = 3
 
     def __init__(self):
@@ -22,6 +28,8 @@ class Game:
     def play(self,row,col):
         row -= 1
         col -= 1
+        if self._board[row][col] != Game._EMPTY:
+            raise GameError
         self._board[row][col] = self._player
         self._player = Game.P2 if self._player is Game.P1 else Game.P1
     
@@ -38,7 +46,12 @@ class Game:
                 return p
             if all(self._board[i][Game._DIM - 1 - i] is p for i in range(Game._DIM)):
                 return p
-        return None
+        numempty = 0
+        for r,c in product(range(3), range(3)):
+            if self._board[r][c] == Game._EMPTY:
+                numempty += 1
+        if numempty == 0:
+            return Game._DRAW
 
 if __name__ == "__main__":
     g = Game()
